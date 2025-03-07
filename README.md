@@ -1,6 +1,168 @@
+# Cat Clinic Tycoon – Design Document
+
+## 1. Overview
+
+**Objective:**  
+Cat Clinic Tycoon is a comprehensive management application for veterinary practices built with Google Apps Script. The app integrates with Slack (free plan) and features an OpenAI helper to assist with in-app code modifications. The UI is inspired by the retro aesthetic of Roller Coaster Tycoon, making it both playful and user-friendly.
+
+**Key Principles:**
+- **Modularity:** Each module encapsulates related functionalities.
+- **User Intuitiveness:** Clear navigation and comprehensive documentation for ease of use.
+- **Scalability & Maintainability:** Version control with GitHub and a well-organized codebase.
+- **Integration-Ready:** Seamless integration with Slack and external APIs (e.g., OpenAI).
+
+---
+
+## 2. Architecture Overview
+
+**Technology Stack:**
+- **Frontend/GUI:**  
+  Built using Google Apps Script’s HTML Service with custom CSS/JavaScript to emulate a retro style.
+- **Backend:**  
+  Google Apps Script handles business logic and data processing. Data is primarily stored in Google Sheets.
+- **Integrations:**  
+  - **Slack:** For notifications, task capture, and dashboard updates.  
+  - **OpenAI Helper:** Uses a "rosetta stone" file to interpret the project structure and assist with guided changes.
+- **Version Control:**  
+  Git and GitHub manage code revisions and branch organization.
+
+**Data Flow:**
+- Users interact with the GUI, which triggers Apps Script functions.
+- Data operations are performed (e.g., updating employee records, scheduling appointments) and synced with Google Sheets.
+- Notifications and task updates are sent to Slack.
+- The OpenAI helper analyzes the project (using the rosetta stone file) to assist with maintenance and new feature implementation.
+
+---
+
+## 3. Module Breakdown
+
+### A. Employee & HR Management
+- **Employee Database:**  
+  - CRUD operations for employee records (contact info, roles, certifications, etc.).
+- **HR Functions & Onboarding:**  
+  - Onboarding workflows and role-based access, with Slack notifications.
+- **Attendance & Time Tracking:**  
+  - Clock in/out functionality and automated alerts for policy violations.
+
+### B. Operational & Management Functions
+- **Appointment Whiteboard:**  
+  - A visual, drag-and-drop scheduling interface for managing appointments.
+- **Project & Meeting Management:**  
+  - Scheduling meetings, managing tasks, and recording meeting notes.
+- **Employee Training & Development:**  
+  - Tracking training progress, 1-on-1 meetings, quarterly reviews, and professional development.
+
+### C. Employee Engagement & Feedback
+- **Internal Social Module:**  
+  - Chat interface with kudos/high-fives and a badge system for gamification.
+- **Feedback & Communication:**  
+  - Tools for anonymous and non-anonymous feedback to management, with status tracking.
+
+### D. Dashboard & User Interface
+- **Customizable Dashboards:**  
+  - Role-specific dashboards (for support staff and management) displaying tasks, reminders, and training updates.
+- **Retro Aesthetic:**  
+  - A UI design that pays homage to Roller Coaster Tycoon, balancing nostalgia with modern usability.
+
+### E. Integrations & Advanced Features
+- **Slack Integration:**  
+  - Real-time notifications, task capture, and dashboard updates, complying with the Slack free plan.
+- **OpenAI Helper Module:**  
+  - Uses a rosetta stone file to understand the codebase and assist with modifications under restricted permissions.
+
+---
+
+## 4. Project Structure & Branching Strategy
+
+**Folder Structure (current layout):**
+
+```
+Cat-Clinic-Tycoon/
+├── DESIGN_DOC.md         # This design document
+├── README.md             # Project overview and instructions
+├── src/                  
+│   ├── common/           # Shared utilities and configuration files
+│   ├── modules/
+│   │   ├── employeeManagement/   # Employee & HR Management module
+│   │   │   └── main.gs
+│   │   ├── appointmentWhiteboard/ # Appointment Whiteboard module
+│   │   │   ├── main.gs
+│   │   │   └── calendar.gs
+│   │   ├── slackIntegration/      # Slack integration scripts
+│   │   │   ├── main.gs
+│   │   │   └── notifier.gs
+│   │   ├── openaiHelper/          # OpenAI helper module
+│   │   │   ├── main.gs
+│   │   │   └── rosettaStone.gs
+│   │   └── employeeTraining/      # Employee Training & Development module
+│   │       ├── main.gs
+│   │       └── progressTracker.gs
+└── assets/              # CSS, images, and other static assets
+```
+
+**Branching Strategy:**
+- Each module is developed on its own feature branch:
+  - `feature/employee-management`
+  - `feature/appointment-whiteboard`
+  - `feature/slack-integration`
+  - `feature/openai-helper`
+  - `feature/employee-training`
+- Branches are pushed to GitHub for isolated development and later merged into the main branch when complete.
+
+---
+
+## 5. Development Environment & Workflow
+
+**Local Setup:**
+- **Google Apps Script Integration:**  
+  The project is linked to a Google Apps Script project using `clasp`. Use `clasp push` to update the online project and `clasp pull` to sync changes made online.
+- **Code Editor:**  
+  Visual Studio Code is set up with essential extensions (ESLint, Prettier, Markdown All in One, GitLens, GitHub integration) to improve productivity.
+- **Git Workflow:**  
+  Branches are managed locally with Git and pushed to GitHub, ensuring that feature development is isolated and versioned properly.
+
+**Workflow:**
+1. Edit locally in VS Code.
+2. Commit changes on the appropriate feature branch.
+3. Use `clasp` to synchronize the Apps Script project.
+4. Merge and deploy changes as modules become complete and tested.
+
+---
+
+## 6. Progress Update
+
+**Completed:**
+- **Repository Setup:**  
+  - GitHub repository established with a detailed README and this design document.
+  - Feature branches for modules (Employee Management, Appointment Whiteboard, Slack Integration, OpenAI Helper, Employee Training) created.
+  - Folder structure for each module implemented.
+
+**Next Steps:**
+- Develop and test core modules locally.
+- Integrate Google Apps Script with the GitHub repository using `clasp`.
+- Set up local development environment in Visual Studio Code with necessary extensions.
+- Begin prototyping core functionality (e.g., Employee Management CRUD operations and Appointment Whiteboard interactions).
+
+---
+
+## 7. Future Considerations
+
+- **Testing & Deployment:**  
+  Develop testing procedures and automate deployment processes.
+- **Documentation Updates:**  
+  Continuously update this design document as new features and changes are implemented.
+- **User Feedback:**  
+  Incorporate feedback from real users to refine the modules and workflow.
+```
+
+---
+
+### Updated README.md
+
+```markdown
 # Cat Clinic Tycoon
 
-**Cat Clinic Tycoon** is a comprehensive management application designed for veterinary practices. Built using Google Apps Script, it integrates seamlessly with Slack (using the free plan) and includes an OpenAI helper to assist with in-app guidance and code adjustments. The app features a playful, retro GUI inspired by the original Roller Coaster Tycoon game.
+**Cat Clinic Tycoon** is a comprehensive management application for veterinary practices built using Google Apps Script. Inspired by the retro aesthetic of Roller Coaster Tycoon, this app integrates with Slack (free plan) and includes an OpenAI helper to provide guided code modifications and in-app assistance.
 
 ---
 
@@ -19,87 +181,82 @@
 
 ## Overview
 
-Cat Clinic Tycoon is designed to streamline operations at a veterinary medical practice by offering a suite of integrated modules, including:
+Cat Clinic Tycoon aims to streamline operations at veterinary practices by integrating key modules such as:
+- Employee & HR Management
+- Appointment Whiteboard and Scheduling
+- Slack Integration for notifications and task management
+- Employee Training & Development
+- Internal Engagement and Feedback Tools
+- OpenAI Helper for code assistance
 
-- Employee Database & HR Management
-- Standard Operating Procedures (SOP) Development & Management
-- Onboarding, Attendance, and Time Tracking
-- Appointment Flow Whiteboard with drag-and-drop scheduling
-- Employee Training & Development Tracking
-- Project, Meeting, and Feedback Management
-- Internal Social and Engagement Tools (e.g., kudos, badges)
-- Customizable Dashboards for staff and management
-- Slack integration for notifications, task capture, and dashboard updates
-- OpenAI helper integration for context-aware assistance and code modifications
+This project is built with modularity in mind to ensure scalability, ease of use, and maintainability.
 
 ---
 
 ## Features
 
 - **Employee & HR Management:**  
-  CRUD operations for employee records, onboarding workflows, role-based access, and attendance tracking.
-
-- **Operational Modules:**  
-  Visual appointment management, project and meeting scheduling, and detailed SOP management.
-
-- **Employee Engagement:**  
-  Internal chat/social features, gamification through badges, and streamlined feedback channels.
-
-- **Dashboard & UI:**  
-  Custom dashboards tailored for different roles with a nostalgic Roller Coaster Tycoon aesthetic.
-
+  CRUD operations for employee records, onboarding workflows, and attendance tracking.
+- **Appointment Whiteboard:**  
+  Visual scheduling with drag-and-drop functionality.
+- **Project & Meeting Management:**  
+  Tools for meeting scheduling, task management, and note-taking.
+- **Employee Training & Development:**  
+  Modules for tracking training progress and performance reviews.
+- **Internal Social & Feedback:**  
+  Chat features, kudos/high-fives, gamification badges, and feedback channels.
 - **Integrations:**  
-  Slack (free version) for real-time notifications and task management, plus an OpenAI helper for guided code updates.
+  - **Slack:** For notifications and dashboard updates.
+  - **OpenAI Helper:** For guided code modifications based on a “rosetta stone” file.
 
 ---
 
 ## Technology Stack
 
 - **Frontend/GUI:**  
-  Google Apps Script HTML Service (with custom CSS and JavaScript).
-
+  Google Apps Script HTML Service with custom CSS/JS.
 - **Backend:**  
-  Google Apps Script, with data stored in Google Sheets (or another supported database).
-
+  Google Apps Script, with data stored in Google Sheets.
 - **Integrations:**  
-  - **Slack:** For notifications, task capture, and dashboard updates.
-  - **OpenAI Helper:** Provides in-app guidance using a "rosetta stone" file to understand the app's structure.
-
-- **Version Control & Documentation:**  
-  GitHub for code hosting, version control, and maintaining the project documentation.
+  Slack (free plan) and OpenAI helper module.
+- **Version Control:**  
+  Git and GitHub (branching and structured folder management).
+- **Development Tools:**  
+  Visual Studio Code with ESLint, Prettier, Markdown All in One, GitLens, and GitHub integration.
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
-
-- A Google account to use Google Apps Script and Google Sheets.
-- A GitHub account for version control.
-- Access to Slack (free plan) for integration testing.
+- Google Account for Apps Script and Sheets.
+- Git and GitHub installed on your local machine.
+- Node.js and `clasp` installed for Apps Script project management.
 
 ### Installation
 
 1. **Clone the Repository:**
-
    ```bash
-   git clone https://github.com/your-username/Cat-Clinic-Tycoon.git
+   git clone https://github.com/annamintz30/Cat-Clinic-Tycoon.git
    cd Cat-Clinic-Tycoon
+   ```
 
 2. **Set Up Google Apps Script:**
+   - Use `clasp` to clone your Apps Script project:
+     ```bash
+     clasp clone YOUR_SCRIPT_ID
+     ```
+   - Replace `YOUR_SCRIPT_ID` with your project’s script ID.
 
-   - Open Google Apps Script (https://script.google.com/).
-   - Create a new project and link it to your GitHub repository if desired.
-   - Copy the code from the repository into your Apps Script project.
-
-3. **Configure Slack Integration:**
-
-   - Review the integration settings in the code.
-   - Add your Slack webhook or API tokens as necessary, ensuring they conform to the free plan's limitations.
+3. **Local Development Setup:**
+   - Open the project in Visual Studio Code.
+   - Install recommended extensions (ESLint, Prettier, Markdown All in One, GitLens, etc.).
 
 4. **Run Initial Setup Scripts:**
-
-   - Execute the initial setup functions in the Apps Script environment to configure your database and settings.
+   - Ensure that your Google Apps Script and GitHub are synchronized using:
+     ```bash
+     clasp push
+     ```
 
 ---
 
@@ -107,16 +264,26 @@ Cat Clinic Tycoon is designed to streamline operations at a veterinary medical p
 
 ```
 Cat-Clinic-Tycoon/
-├── DESIGN_DOC.md         # Comprehensive design document outlining app architecture, modules, and roadmap.
-├── README.md             # This file.
-├── src/                  # Source code for the Google Apps Script project.
-│   ├── main.gs           # Main Apps Script file.
-│   ├── employeeManager.gs# Employee & HR Management module.
-│   ├── appointments.gs   # Appointment Flow Whiteboard module.
-│   ├── slackIntegration.gs # Slack integration scripts.
-│   ├── openaiHelper.gs   # OpenAI Helper integration.
-│   └── ...               # Additional modules as needed.
-└── assets/               # Images, CSS, and other static assets.
+├── DESIGN_DOC.md         # Detailed design document
+├── README.md             # This file
+├── src/                  
+│   ├── common/           # Shared utilities and configs
+│   ├── modules/
+│   │   ├── employeeManagement/   # Employee & HR Management
+│   │   │   └── main.gs
+│   │   ├── appointmentWhiteboard/ # Appointment scheduling module
+│   │   │   ├── main.gs
+│   │   │   └── calendar.gs
+│   │   ├── slackIntegration/      # Slack integration scripts
+│   │   │   ├── main.gs
+│   │   │   └── notifier.gs
+│   │   ├── openaiHelper/          # OpenAI helper module
+│   │   │   ├── main.gs
+│   │   │   └── rosettaStone.gs
+│   │   └── employeeTraining/      # Employee Training & Development
+│   │       ├── main.gs
+│   │       └── progressTracker.gs
+└── assets/              # CSS, images, and static assets
 ```
 
 ---
@@ -124,33 +291,33 @@ Cat-Clinic-Tycoon/
 ## Documentation
 
 - **Design Document:**  
-  Refer to [DESIGN_DOC.md](https://github.com/annamintz30/Cat-Clinic-Tycoon/blob/main/DESIGN_DOC.md) for detailed design notes, module breakdown, and the project roadmap.
-
+  See [DESIGN_DOC.md](./DESIGN_DOC.md) for a detailed description of architecture, modules, and workflow.
 - **Update Workflow:**  
-  This project uses GitHub for version control. Regular commits and updates to both the code and design document will ensure that new features and improvements are tracked over time.
+  Regular commits and updates to both code and documentation are maintained via GitHub.
 
 ---
 
 ## Contributing
 
-Contributions are welcome! Please follow these guidelines:
-
+Contributions are welcome! Follow these steps:
 1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
+2. Create a new branch for your feature or fix (e.g., `feature/your-feature`).
 3. Submit a pull request with a detailed description of your changes.
-4. Update the design document if your changes affect the overall architecture or functionality.
+4. Update the design document if your changes affect the project architecture.
 
 ---
 
 ## License
 
-[MIT License](LICENSE)
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-Happy coding and have fun building Cat Clinic Tycoon!
+Happy coding!
 ```
 
 ---
 
-This README provides a clear overview of the project, its features, and guidance on getting started. You can update it as the project evolves and refer back to it each time you update the design document or add new modules.
+These updated documents reflect our progress—from establishing the repository structure and feature branches to linking the Google Apps Script project with GitHub and setting up your local development environment. When you start our next session, we can refer back to these files to pick up right where we left off. 
+
+Let me know if you need any further modifications before we end the session!
