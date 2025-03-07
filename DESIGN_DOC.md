@@ -153,3 +153,91 @@ Cat-Clinic-Tycoon/
 - **User Feedback:**  
   Incorporate feedback from real users to refine the modules and workflow.
 
+Below is an updated section for your design document that details the login and authentication system, including role-based access control:
+
+---
+
+## 8. Authentication and Permissions
+
+### Overview
+
+To ensure that only authorized personnel access specific modules and sensitive operations, the application will use a two-tier authentication system:
+
+1. **Google Authentication:**  
+   Users must be signed in to their Google account. This leverages Google's secure authentication to verify the identity of the person accessing the app.
+
+2. **Application-Level Login:**  
+   Once signed in, users will log in to the app using their common name or JCC ID and a unique password. This custom login further determines which modules and functions are accessible based on the user's role.
+
+### Role-Based Access Control
+
+The application will support multiple levels of access based on user roles. Each role has predefined permissions:
+
+- **Top-Level Roles:**  
+  - **Roles:** Practice Owner, Practice Manager, IT Company  
+  - **Access:** Full access to all modules and functions.  
+  - **Authentication:** Must sign in with their personal Google account and log in using their common name or JCC ID plus password.
+
+- **Mid-Level Roles:**  
+  - **Roles:** PCM, Office Manager, Lead DVM, Boarding Manager  
+  - **Access:** Access to most modules; however, some modules (e.g., performance evaluations) will display data only for the staff they manage.  
+  - **Authentication:** Must sign in with their personal Google account and log in using their credentials.
+
+- **Supervisors:**  
+  - **Roles:** PCS (shared account for two users), CCS (individual account may not have its own Google account)  
+  - **Access:** Limited additional access beyond support staff, with potential for future expansion of permissions.  
+  - **Authentication:** Must be logged in to a clinic-owned Google account and then use their name or ID plus password.
+
+- **Support Staff:**  
+  - **Roles:** CCAs, PCAs, LVTs, Associate DVMs, Boarding Assistants  
+  - **Access:** Access only to non-management modules, with further limitations within those modules as required.  
+  - **Authentication:** Must be logged in to a clinic-owned Google account and then use their name or ID plus password.
+
+### Implementation Details
+
+- **Google-Level Authentication:**  
+  - The app will be deployed as a web app or container-bound script, ensuring that each user is signed into their Google account before accessing the application.
+  - Deployment settings will restrict access to authenticated users within the clinic’s Google Workspace domain (or to any signed-in Google user if broader access is acceptable).
+
+- **Custom Login System:**  
+  - **Login UI:**  
+    A dedicated login page will prompt the user to enter their common name or JCC ID along with a password.
+  - **Credential Storage:**  
+    User credentials (common name/JCC ID and password) will be stored securely within the application’s database (or a protected Google Sheet). For production, consider hashing passwords rather than storing them in plaintext.
+  - **Session Management:**  
+    After a successful login, a session variable or token will be established to maintain the user's authenticated state as they navigate the app.
+  - **Role Verification:**  
+    The application code will use `Session.getActiveUser().getEmail()` in combination with the custom login credentials to determine the user's role. For example:
+    ```javascript
+    var userEmail = Session.getActiveUser().getEmail();
+    // Use the email and login credentials to retrieve user details (including role) from your database.
+    ```
+  - **Conditional UI Rendering:**  
+    Based on the verified role, the HTML UI will conditionally display buttons and modules:
+    - Management controls will only be visible to users in the top-level and mid-level roles.
+    - Sensitive data (e.g., performance evaluations) will be filtered to show only information pertinent to the user’s management scope.
+  
+- **Server-Side Security:**  
+  Regardless of client-side UI restrictions, every server-side function that performs a sensitive operation will also validate the user's role before executing. For example:
+  ```javascript
+  function performSensitiveAction() {
+    if (!isManager()) {
+      throw new Error("Access denied.");
+    }
+    // ... perform action ...
+  }
+  ```
+  This double-check ensures that even if UI elements are bypassed, unauthorized operations are not executed.
+
+### Future Considerations
+
+- **Enhanced Session Management:**  
+  Future updates may include more sophisticated session handling, such as token expiration and multi-factor authentication.
+- **Audit Logging:**  
+  All access and sensitive operations can be logged to an audit trail to track usage and detect unauthorized attempts.
+- **Scalable User Management:**  
+  As the application grows, integration with a dedicated user management system or identity provider may be considered for better scalability and security.
+
+---
+
+This updated section integrates the custom login system with role-based access control and details how both Google authentication and application-level permissions will be used to secure the app. Let me know if you need further refinements or additional details!
